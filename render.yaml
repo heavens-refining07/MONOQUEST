@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: monoquest-demo
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements-render.txt
+    startCommand: gunicorn --no-control-socket --workers 1 --worker-class sync --threads 1 --bind 0.0.0.0:$PORT app:app
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.12
+      - key: MONOQUEST_DATA_DIR
+        value: /tmp/monoquest-demo
+      - key: MONOQUEST_SECRET
+        generateValue: true

@@ -1,0 +1,85 @@
+{% from 'icons.html' import icon %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#070F19">
+  <meta name="description" content="MONOQUEST - a cultivation-themed habit and routine tracker">
+  <title>{% block title %}MONOQUEST · Your daily quest board{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css',v='celestial-1') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='design.css',v='celestial-1') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='cultivation.css', v='celestial-art-2') }}">
+  <script src="{{ url_for('static', filename='app.js',v='celestial-1') }}" defer></script>
+</head>
+<body>
+<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+  <symbol id="i-check-square" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m7 12 3 3 7-7"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3-7 8-7s8 2.5 8 7"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-12h-7z"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 22c-5 0-8-3.6-8-8 0-4 2.4-7 5.2-9 .3 3 1.5 4 2.2 4.4C12 7 14 4 14 2c3.6 4 6 7.9 6 12 0 4.7-3.2 8-8 8z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="m4 20 4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11zM14 7l3 3"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1m0-15c3-2 6-2 9-1v15c-3-1-6-1-9 1m0-15v15"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 5-6 7 6 7M16 5l6 7-6 7m-3-16-2 14"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 3h10v8a5 5 0 0 1-10 0zM7 6H3v3a4 4 0 0 0 4 4m10-7h4v3a4 4 0 0 1-4 4M12 16v4m-5 1h10"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 21V13h3v8zM10.5 21V8h3v13zM17 21V3h3v18z"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M10 2h4l.7 3 2 1 2.7-1.3 2 3.4-2.5 2.2v2.4l2.5 2.2-2 3.4-2.7-1.3-2 1-.7 3h-4l-.7-3-2-1-2.7 1.3-2-3.4L5.1 13v-2l-2.5-2.2 2-3.4L7.3 6l2-1z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 8-3 7-3 9h18c0-2-3-1-3-9M10 21h4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7"/><path d="m15.5 15.5 5 5"/></symbol>
+  <symbol id="i-swords" viewBox="0 0 24 24"><path d="m3 3 8 8m-5-8L3 6m6 5L4 16v4h4l5-5m8-12-8 8m5-8 3 3m-6 5 5 5v4h-4l-5-5"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></symbol>
+</svg>
+<div class="application-shell">
+  <aside class="sidebar" id="sidebar">
+    <a href="{{ url_for('dashboard') }}" class="brand" aria-label="Monoquest home">
+      <span class="torii-icon" aria-hidden="true"><svg class="torii-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 16c4-1 8-5 12-11 4 6 8 10 12 11H4ZM8 23h16M10 16v11m12-11v11M5 27h22M16 16v11"/></svg></span>
+      <span><strong>MONOQUEST</strong><small>CELESTIAL SECT</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main menu">
+      <a class="nav-item {% if page=='dashboard' %}active{% endif %}" {% if page=='dashboard' %}aria-current="page"{% endif %} href="{{ url_for('dashboard') }}">{{ icon('home') }}<span>Dashboard</span></a>
+      <a class="nav-item {% if page=='routine' %}active{% endif %}" {% if page=='routine' %}aria-current="page"{% endif %} href="{{ url_for('routine') }}">{{ icon('calendar') }}<span>Routine</span></a>
+      <a class="nav-item {% if page=='habits' %}active{% endif %}" {% if page=='habits' %}aria-current="page"{% endif %} href="{{ url_for('habits_page') }}">{{ icon('check-square') }}<span>Habits</span></a>
+      <a class="nav-item {% if page=='quests' %}active{% endif %}" {% if page=='quests' %}aria-current="page"{% endif %} href="{{ url_for('quests_page') }}">{{ icon('swords') }}<span>Quests</span></a>
+      <a class="nav-item {% if page=='analytics' %}active{% endif %}" {% if page=='analytics' %}aria-current="page"{% endif %} href="{{ url_for('analytics') }}">{{ icon('chart') }}<span>Analytics</span></a>
+      <a class="nav-item {% if page=='achievements' %}active{% endif %}" {% if page=='achievements' %}aria-current="page"{% endif %} href="{{ url_for('achievements_page') }}">{{ icon('trophy') }}<span>Achievements</span></a>
+      <a class="nav-item {% if page=='profile' %}active{% endif %}" {% if page=='profile' %}aria-current="page"{% endif %} href="{{ url_for('profile') }}">{{ icon('user') }}<span>Profile</span></a>
+      <a class="nav-item {% if page=='focus' %}active{% endif %}" {% if page=='focus' %}aria-current="page"{% endif %} href="{{ url_for('focus') }}">{{ icon('clock') }}<span>Focus</span></a>
+      <a class="nav-item {% if page=='history' %}active{% endif %}" {% if page=='history' %}aria-current="page"{% endif %} href="{{ url_for('history') }}">{{ icon('calendar') }}<span>History</span></a>
+      <a class="nav-item {% if page=='review' %}active{% endif %}" {% if page=='review' %}aria-current="page"{% endif %} href="{{ url_for('review') }}">{{ icon('book') }}<span>Weekly Review</span></a>
+      <a class="nav-item {% if page=='settings' %}active{% endif %}" {% if page=='settings' %}aria-current="page"{% endif %} href="{{ url_for('settings_page') }}">{{ icon('settings') }}<span>Settings</span></a>
+    </nav>
+    <div class="sidebar-illustration" aria-hidden="true"></div>
+    <div class="sidebar-caption"><span>修行</span> THE DAILY PRACTICE</div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+  <div class="app-content">
+    <header class="mobile-header">
+      <button class="icon-btn" id="menu-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">{{ icon('menu') }}</button>
+      <a href="{{ url_for('dashboard') }}" class="mobile-brand"><svg class="torii-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 16c4-1 8-5 12-11 4 6 8 10 12 11H4ZM8 23h16M10 16v11m12-11v11M5 27h22M16 16v11"/></svg> MONOQUEST</a>
+      <a href="{{ url_for('profile') }}" aria-label="My profile"><img class="mobile-avatar" src="{{ url_for('static',filename='images/avatar-' ~ profile.avatar ~ '.webp') }}" alt=""></a>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}<div class="toast-area" role="status">{% for category,message in messages %}<div class="toast {{ category }}">{{ message }}<button type="button" data-dismiss="flash" aria-label="Dismiss">×</button></div>{% endfor %}</div>{% endif %}
+    {% endwith %}
+    {% if public_demo %}<div class="demo-banner"><strong>LIVE DEMO</strong><span>Try the sample board. Changes are temporary.</span><a href="{{ url_for('settings_page') }}">Demo settings</a></div>{% endif %}
+    {% block content %}{% endblock %}
+    <footer class="app-footer">MONOQUEST <span>·</span> WALK YOUR DAO <span>·</span> {{ "PORTFOLIO DEMO" if public_demo else "STORED ON THIS DEVICE" }}</footer>
+  </div>
+</div>
+{% block dialogs %}{% endblock %}
+{% if celebration %}<div class="celebration" id="quest-celebration" role="status" aria-live="polite"><button type="button" class="celebration-close" aria-label="Dismiss quest celebration">×</button><span class="celebration-kicker">{{ 'A CULTIVATION BREAKTHROUGH' if celebration.level_up else 'PROGRESS RECORDED' }}</span><strong>{{ 'LEVEL UP · ASCENSION' if celebration.level_up else 'QUEST CLEARED' }}</strong><span class="xp-float">+{{ celebration.xp }} XP{% if celebration.level_up %} · LEVEL {{ celebration.level }}{% endif %}</span><small>{{ 'Your daily practice has carried you to a new level.' if celebration.level_up else 'One more step along your path.' }}</small></div>{% endif %}
+</body>
+</html>

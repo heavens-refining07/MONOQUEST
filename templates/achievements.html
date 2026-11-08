@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% from 'icons.html' import icon %}
+{% from 'visual_macros.html' import emblem with context %}
+{% block title %}Achievements · MONOQUEST{% endblock %}
+{% block content %}
+<main class="subpage"><div class="page-head achievements-head scene-relics"><div><span class="kicker">HALL OF RELICS / MILESTONES</span><h1>Achievements</h1><p>Your collection of victories, one at a time.</p></div><span class="small-counter">{{ achievements|selectattr('unlocked')|list|length }} of {{ achievements|length }} unlocked</span></div><div class="achievement-grid">{% for achievement in achievements %}<section class="panel achievement-large {% if achievement.unlocked %}unlocked{% endif %}"><div class="achievement-header"><span class="achievement-emblem">{{ emblem(achievement) }}</span><span class="achievement-status">{% if achievement.unlocked %}UNLOCKED ✓{% else %}LOCKED · KEEP GOING{% endif %}</span></div><h2>{{ achievement.name }}</h2><p>{{ achievement.desc }}</p>{% if achievement.unlocked_on %}<p class="help-text">Earned {{ achievement.unlocked_on }} · yours to keep</p>{% endif %}<div class="xp-line"><span>Progress</span><b>{{ achievement.progress }} / {{ achievement.target }}</b></div><div class="progress-track"><span style="width:{{ achievement.progress / achievement.target * 100 }}%"></span></div></section>{% endfor %}</div></main>
+{% endblock %}

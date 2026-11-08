@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% from 'icons.html' import icon %}
+{% from 'workflow_macros.html' import rows,fields with context %}
+{% from 'visual_macros.html' import emblem with context %}
+{% block content %}
+<div class="dashboard-hero">
+  <div class="hero-top"><div class="hero-art" aria-hidden="true"><img src="{{ url_for('static',filename='images/cultivation/moonlit-cultivator.webp') }}" alt=""></div>
+    <div class="hero-fog" aria-hidden="true"></div>
+    <div class="hero-welcome"><span class="hero-kicker">CELESTIAL SECT <span>✦</span> DAILY CULTIVATION</span><h1>{{ greeting }}, {{ profile.display_name }}!</h1><p>Cultivation begins with the quest in front of you.</p></div>
+    <div class="hero-controls"><button class="bell-btn" type="button" id="notification-btn" aria-label="Open achievements notifications" aria-expanded="false">{{ icon('bell') }}{% if new_achievements %}<i></i>{% endif %}</button><div class="date-display">{{ icon('calendar') }} {{ readable_date }}</div></div>
+    <div class="notifications" id="notification-box" hidden><strong>Your journey</strong><p>{{ new_achievements }} new achievements · {{ today_xp }} XP today.</p><a href="{{ url_for('achievements_page') }}">View achievements →</a></div>
+  </div>
+  <div class="hero-stat-row">
+    <a href="{{ url_for('profile') }}" class="hero-player-frame">
+      <img src="{{ url_for('static',filename='images/avatar-' ~ profile.avatar ~ '.webp') }}" alt="Your character avatar">
+      <span class="rank-seal"><small>RANK</small>{{ rank }}</span><div class="hero-player-copy"><strong>Lv. {{ level }}</strong><span>{{ profile.title }}</span><div class="xp-progress-label"><b>{{ level_xp }} / 200 XP</b><b>{{ level_percent|int }}%</b></div><div class="progress-track"><span style="width:{{ level_percent }}%"></span></div></div>
+    </a>
+    <div class="hero-metrics">
+      <a href="{{ url_for('analytics') }}" class="hero-metric">{{ icon('flame') }}<strong>{{ streak }}</strong><span>Day streak</span></a>
+      <a href="{{ url_for('analytics') }}" class="hero-metric">{{ icon('check-square') }}<strong>{{ completions }}</strong><span>Tasks done</span></a>
+      <a href="{{ url_for('habits_page') }}" class="hero-metric">{{ icon('target') }}<strong>{{ active_habit_count }}</strong><span>Active habits</span></a>
+      <a href="{{ url_for('profile') }}" class="hero-metric">{{ icon('chart') }}<strong>{{ level }}</strong><span>Level</span></a>
+    </div>
+  </div>
+</div>
+<main class="dashboard-main">
+  <section class="panel main-quest-panel" data-chapter="{{ '%02d'|format(level) }}"><span class="kicker"><span class="mission-label">SECT EDICT</span> TODAY'S MAIN QUEST</span>{% if main_quest %}<div class="main-quest-copy"><div><h2>{{ main_quest.title }}</h2><p>{{ main_quest.first_step or main_quest.minimum_action or 'Start with a few focused minutes.' }}</p></div>{% if main_quest.done %}<span class="status-tag">Completed ✓</span>{% else %}<a class="btn-primary" href="{{ url_for('focus',task=main_quest.id) }}">Start focus →</a>{% endif %}</div><form method="post" action="{{ url_for('main_quest') }}">{{ fields() }}<input type="hidden" name="habit_id" value=""><button class="text-action" type="submit">Unpin</button></form>{% else %}<p>Pin one priority using “Pin for today” below.</p>{% endif %}</section>
+
+  <div class="dashboard-three-columns">
+    <section class="panel quests-panel" id="quests">
+      <div class="section-header"><h2>{{ icon('swords') }} Today's Quests</h2><span class="small-counter">{{ done }} / {{ count }} completed</span></div>
+      {{ rows(habits) }}
+      {% if minimum_count %}<p class="help-text">{{ minimum_count }} small starts today. Full completions count toward the progress ring.</p>{% endif %}
+      <button class="add-inline" type="button" data-quest-modal="new" data-kind="habit">{{ icon('plus') }} Add habit</button>
+      <a class="text-action" href="{{ url_for('quests_page') }}">Manage one-time quests →</a>
+    </section>
+    <section class="panel routine-panel" id="routine">
+      <div class="section-header"><h2>{{ icon('calendar') }} Daily Routine</h2><a href="{{ url_for('routine') }}" class="mini-link" aria-label="Edit daily routine">Edit {{ icon('chevron') }}</a></div>
+      <div class="timeline">
+        {% for item in routines %}
+        <div class="timeline-item {% if next_routine and item.id==next_routine.id %}next{% endif %}">
+          <span class="timeline-node"><i></i></span><span class="timeline-time">{{ item.scheduled_time|clock }}</span><span class="timeline-title">{{ item.title }}</span>{% if next_routine and item.id==next_routine.id %}<span class="now-pill">NEXT</span>{% endif %}
+        </div>
+        {% else %}<div class="empty-state">Add your schedule to see your routine.</div>{% endfor %}
+      </div>
+    </section>
+    <div class="dashboard-right-stack">
+      <section class="panel progress-panel"><div class="section-header"><h2>{{ icon('target') }} Today's Progress</h2></div><div class="progress-body"><div class="progress-ring" style="--progress:{{ percent }}"><div><strong>{{ percent }}%</strong></div></div><div class="progress-legend"><span>{{ icon('check-square') }} <b>{{ done }} / {{ count }}</b> Tasks</span><span>{{ icon('flame') }} <b>{{ streak }}</b> Day streak</span><span>{{ icon('zap') }} <b>+{{ today_xp }}</b> XP today</span></div></div></section>
+      <div class="panel manga-quote"><div class="manga-quote-image" aria-hidden="true"></div><blockquote>“ The Dao is walked<br> one step at a time. ”</blockquote></div>
+    </div>
+  </div>
+  <div class="dashboard-secondary-row">
+    <section class="panel mini-week"><div class="section-header"><h2>{{ icon('flame') }} Weekly Streak</h2><a href="{{ url_for('analytics') }}" class="mini-link">View stats →</a></div><div class="week-days">{% for day in week %}<div title="{{ day.date }}: {{ day.count }} quest completions" class="week-cell {% if day.today %}today{% endif %} {% if day.active %}active{% endif %}"><span>{{ day.day }}</span><strong>{% if day.active %}{{ icon('check') }}{% else %}{% if day.today %}·{% else %}—{% endif %}{% endif %}</strong></div>{% endfor %}</div></section>
+    <section class="panel mini-achievements"><div class="section-header"><h2>{{ icon('trophy') }} Achievements</h2><a href="{{ url_for('achievements_page') }}" class="mini-link">View all →</a></div><div class="recent-achievements">{% for achievement in recent_achievements[:2] %}<div class="recent-achievement {% if not achievement.unlocked %}locked{% endif %}"><span class="trophy-medal">{{ emblem(achievement) }}</span><div><strong>{{ achievement.name }}</strong><small>{{ 'Earned ' ~ achievement.unlocked_on if achievement.unlocked else 'Locked · ' ~ achievement.progress ~ ' / ' ~ achievement.target }}</small></div></div>{% endfor %}</div></section>
+  </div>
+</main>
+{% endblock %}
+{% block dialogs %}
+{% include 'quest_dialog.html' %}
+{% endblock %}

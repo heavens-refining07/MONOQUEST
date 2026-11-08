@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% from 'workflow_macros.html' import fields with context %}
+{% block title %}Settings · MONOQUEST{% endblock %}{% block content %}<main class="subpage">
+  <header class="page-head ink-head scene-archive"><div><span class="kicker">PORTFOLIO EDITION</span><h1>Demo Settings</h1><p>Your browser has its own temporary sample board.</p></div></header>
+  <section class="panel workspace-panel"><h2>Start a fresh chapter</h2><p>Reset restores the sample quests, routine and progress. It clears any changes you made in this browser. The hosting service may also reset demo data when it restarts.</p>
+  <form method="post" action="{{ url_for('reset_demo') }}">{{ fields() }}<button class="btn-primary" type="submit">Reset demo board</button></form></section>
+  <section class="panel workspace-panel"><h2>Your character</h2><p>Change your demo character name, goal and built-in avatar.</p><a class="btn-outline" href="{{ url_for('profile') }}#edit-profile">Edit profile →</a></section>
+</main>{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% from 'icons.html' import icon %}
+{% block title %}Profile · MONOQUEST{% endblock %}
+{% block content %}
+<main class="subpage">
+  <div class="page-head anime-head scene-relics"><div><span class="kicker">DISCIPLE REGISTER / PROFILE</span><h1>My Character</h1><p>Every legend begins as someone who kept showing up.</p></div><a class="btn-outline" href="{{ url_for('dashboard') }}">← Dashboard</a></div>
+  <section class="character-hero panel"><div class="character-art-bg"></div><div class="character-avatar-large"><img src="{{ url_for('static',filename='images/avatar-' ~ profile.avatar ~ '.webp') }}" alt="Your character avatar"><span>THE PROTAGONIST</span></div><div class="character-bio-main"><span class="kicker">PLAYER PROFILE</span><h2>{{ profile.display_name }}</h2><p class="character-title">{{ profile.title }}</p><div class="character-pills"><span>LV. {{ level }}</span><span>{{ rank|upper }} CLASS</span><span>{{ total_xp }} XP</span></div><div class="xp-line"><span>Level progress</span><strong>{{ level_xp }} / 200 XP</strong></div><div class="progress-track"><span style="width:{{ level_percent }}%"></span></div><p class="about-snippet">{{ profile.bio or 'Your origin story is yours to write.' }}</p><a href="#edit-profile" class="btn-primary btn-small">{{ icon('pen') }} Edit profile</a></div></section>
+  <div class="four-stat-grid">
+    <div class="panel info-stat">{{ icon('sparkles') }}<strong>{{ level }}</strong><span>Level</span></div>
+    <div class="panel info-stat">{{ icon('flame') }}<strong>{{ streak }}</strong><span>Day streak</span></div>
+    <div class="panel info-stat">{{ icon('check-square') }}<strong>{{ completions }}</strong><span>Tasks done</span></div>
+    <div class="panel info-stat">{{ icon('trophy') }}<strong>{{ achievements|selectattr('unlocked')|list|length }}</strong><span>Achievements</span></div>
+  </div>
+  <div class="subpage-grid">
+    <section class="panel profile-form-panel" id="edit-profile"><div class="section-header"><h2>{{ icon('pen') }} Edit Profile</h2></div><p class="section-desc">Personalize your character and avatar.</p>
+      <form action="{{ url_for('update_profile') }}" method="post" class="profile-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><div class="field-grid"><div><label for="profile-name">Character name</label><input id="profile-name" name="display_name" maxlength="32" value="{{ profile.display_name }}" required></div><div><label for="profile-title">Character title</label><input id="profile-title" name="title" maxlength="45" value="{{ profile.title }}" required></div></div><label for="profile-focus">Main goal</label><input id="profile-focus" name="focus" maxlength="80" value="{{ profile.focus }}" placeholder="Build a consistent routine"><label for="profile-bio">About me</label><textarea id="profile-bio" name="bio" maxlength="240" rows="3">{{ profile.bio }}</textarea><label>Choose your avatar</label><div class="avatar-options">{% for choice in avatar_choices %}<label class="avatar-option"><input type="radio" name="avatar" value="{{ choice }}" {% if profile.avatar==choice %}checked{% endif %}><span><img src="{{ url_for('static',filename='images/avatar-' ~ choice ~ '.webp') }}" alt="{{ choice|capitalize }} avatar"><small>{{ choice|capitalize }}</small></span></label>{% endfor %}</div><button class="btn-primary" type="submit">Save Profile {{ icon('check') }}</button></form>
+    </section>
+    <div class="stack-column"><section class="panel about-panel"><div class="section-header"><h2>{{ icon('book') }} About Me</h2></div><strong>Current goal</strong><p>{{ profile.focus or 'No goal set yet.' }}</p><strong>Character story</strong><p>{{ profile.bio or 'The adventure is just beginning.' }}</p></section><section class="panel"><div class="section-header"><h2>{{ icon('trophy') }} My Achievements</h2><a class="mini-link" href="{{ url_for('achievements_page') }}">View all →</a></div>{% for achievement in achievements[:3] %}<div class="tiny-achievement"><span class="trophy-medal">{{ icon(achievement.icon) }}</span><span><strong>{{ achievement.name }}</strong><small>{{ achievement.progress }} / {{ achievement.target }} · {% if achievement.unlocked %}Unlocked{% else %}In progress{% endif %}</small></span></div>{% endfor %}</section></div>
+  </div>
+</main>
+{% endblock %}
